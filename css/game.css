@@ -37,8 +37,12 @@ font-family: 'Cabin';
 	color: #686868;
 }
 
+.cube:not(.hidden):not(.hot):hover {
+	background-color: #c7dddd;
+}
 
 li.cube {
+	cursor: pointer;
   vertical-align: middle;
   min-width: 50px;
   min-height: 50px;
