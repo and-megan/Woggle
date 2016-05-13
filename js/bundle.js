@@ -46,7 +46,6 @@
 
 	var Game = __webpack_require__(1);
 	var Level = __webpack_require__(4);
-	// var Trie = require('./trie');
 	var Gameboard = __webpack_require__(3);
 	var boggleDictionary = __webpack_require__(5);
 	
@@ -75,9 +74,9 @@
 	var Game = function($gameboard, $container, dictionary, level, $timerSpot) {
 		this.level = level;
 		this.$el = $container;
-		var game = this;
+		// var game = this;
 		this.dictionary = dictionary;
-		var $guessed = $("#guessed");
+		// var $guessed = $("#guessed");
 		var cb = this.finishGame.bind(this);
 		this.timer = new Timer($container, cb, $timerSpot);
 		this.gameboard = $gameboard;
@@ -97,24 +96,18 @@
 	
 	Game.prototype.toggleGame = function(e) {
 		e.preventDefault();
-		//set up new blank game
-		// $(".cube").addClass("hidden");
-		// this.level.clearLevel();
-		// $(".gameMessage").text("");
-		// this.removeKeyEvents();
-		// $(".cube").addClass("hidden");
 	
-		if (this.timer.ticking) {
-			$(".cube").addClass("hidden");
-			this.level.clearLevel();
-			$(".gameMessage").text("");
-			this.removeKeyEvents();
-		} else {
+		// if (this.timer.ticking) {
+		// 	$(".cube").addClass("hidden");
+		// 	this.level.clearLevel();
+		// 	$(".gameMessage").text("");
+		// 	this.removeKeyEvents();
+		// } else {
 	
 			this.gameboard.generateBoard();
 			$(".cube").removeClass("hidden");
 			this.keyEvents();
-		}
+		// }
 		this.timer.toggleButton();
 		this.timer.ticking = !this.timer.ticking;
 	};
@@ -163,7 +156,7 @@
 		this.level.clearLevel();
 		$(".gameMessage").text("");
 		this.removeKeyEvents();
-	
+		window.location.reload();
 	};
 	
 	

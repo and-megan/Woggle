@@ -1,6 +1,5 @@
 var Game = require('./game.js');
 var Level = require('./level.js');
-// var Trie = require('./trie');
 var Gameboard = require('./gameboard.js');
 var boggleDictionary = require('./boggleDictionary.js');
 

@@ -7,9 +7,9 @@ var Level = require('./level.js');
 var Game = function($gameboard, $container, dictionary, level, $timerSpot) {
 	this.level = level;
 	this.$el = $container;
-	var game = this;
+	// var game = this;
 	this.dictionary = dictionary;
-	var $guessed = $("#guessed");
+	// var $guessed = $("#guessed");
 	var cb = this.finishGame.bind(this);
 	this.timer = new Timer($container, cb, $timerSpot);
 	this.gameboard = $gameboard;
@@ -29,24 +29,18 @@ Game.prototype.keyEvents = function() {
 
 Game.prototype.toggleGame = function(e) {
 	e.preventDefault();
-	//set up new blank game
-	// $(".cube").addClass("hidden");
-	// this.level.clearLevel();
-	// $(".gameMessage").text("");
-	// this.removeKeyEvents();
-	// $(".cube").addClass("hidden");
 
-	if (this.timer.ticking) {
-		$(".cube").addClass("hidden");
-		this.level.clearLevel();
-		$(".gameMessage").text("");
-		this.removeKeyEvents();
-	} else {
+	// if (this.timer.ticking) {
+	// 	$(".cube").addClass("hidden");
+	// 	this.level.clearLevel();
+	// 	$(".gameMessage").text("");
+	// 	this.removeKeyEvents();
+	// } else {
 
 		this.gameboard.generateBoard();
 		$(".cube").removeClass("hidden");
 		this.keyEvents();
-	}
+	// }
 	this.timer.toggleButton();
 	this.timer.ticking = !this.timer.ticking;
 };
@@ -95,7 +89,7 @@ Game.prototype.finishGame = function() {
 	this.level.clearLevel();
 	$(".gameMessage").text("");
 	this.removeKeyEvents();
-
+	window.location.reload();
 };
 
 
