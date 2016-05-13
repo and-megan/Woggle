@@ -242,7 +242,7 @@
 	
 		this.ticking = true;
 		this.timeInterval = setInterval(this.tick.bind(this), 1000);
-		$('.beginGame').text("Swap letters for speed punishment");
+		$('.beginGame').addClass("hide-begin");
 	
 	};
 	
@@ -253,6 +253,7 @@
 		clearInterval(this.timeInterval);
 		$(".timer").removeClass("tickingTimeBomb");
 		this.seconds = 180;
+		$('.beginGame').removeClass("hide-begin");
 		$('.beginGame').text("Begin!");
 	};
 	

@@ -15,7 +15,9 @@ body {
 	margin: 0px;
 }
 
-
+.hide-begin {
+	display: none;
+}
 .space {
   flex-direction: row;
   display: flex;
