@@ -1,0 +1,130 @@
+h1 {
+	text-align: center;
+	padding-top: 10px;
+}
+
+h4 {
+	text-align: center;
+}
+
+* {
+font-family: 'Cabin';
+}
+
+body {
+	margin: 0px;
+}
+
+
+.space {
+  flex-direction: row;
+  display: flex;
+	flex-wrap: wrap;
+	max-width: 450px;
+	margin-left: 390px;
+}
+
+.hidden {
+	color: transparent;
+	background-color: skyblue;
+}
+
+.cube:not(.hidden):not(.hot) {
+	background-color: #d4d4d4;
+	color: #686868;
+}
+
+
+li.cube {
+
+  min-width: 50px;
+  min-height: 50px;
+  padding: 10px;
+  display: flex;
+  margin: 15px;
+  text-align: center;
+  font-size: 30px;
+  border-radius: 3px;
+	-webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+	-moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+	box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+}
+
+.hot {
+	background-color: #71aaaa;
+}
+
+.guesses-all {
+  position: absolute;
+  margin-left: 900px;
+}
+.guessedWords {
+	display: flex;
+	flex-direction: column;
+}
+.error {
+	height: 20px;
+	text-align: center;
+}
+.currentWord {
+	height: 30px;
+	text-align: center;
+}
+
+.question:hover {
+  opacity: .5;
+	cursor: pointer;
+}
+
+.question:hover ~ * {
+  color: black;
+	background-color: white;
+}
+
+.question ~ * {
+  color: transparent;
+}
+
+.question {
+  text-align: center;
+  margin-left: 50px;
+  font-size: 20px;
+  background-color: orange;
+	color: white;
+  border-radius: 30px;
+  width: 25px;
+}
+
+.a2 {
+  width: 25%;
+  text-align: center;
+  color: transparent;
+  padding-left: 15px;
+  position: absolute;
+	text-align: justify;
+}
+
+button.beginGame {
+  position: absolute;
+  top: 75px;
+  left: 586px;
+  padding: 10px 20px 10px 20px;
+  background: #faec87;
+  cursor: pointer;
+  border: none;
+  color: #686868;
+  margin: 10px;
+  text-align: center;
+  font-size: 14px;
+  max-height: 45px;
+  -webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  -moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+}
+
+button.beginGame:hover {
+	background-color: #fcf4b8;
+}
+.gameOver {
+	background-color: #fa8795;
+}

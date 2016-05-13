@@ -1,0 +1,22 @@
+{
+  "name": "jsgame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.6.5",
+    "babel-loader": "^6.2.4",
+    "check-word": "^1.1.0",
+    "fs": "0.0.2",
+    "webpack": "^1.12.14",
+    "word-list": "^1.0.1",
+    "word-list-json": "^0.2.0",
+    "wordlist-english": "^1.1.0"
+  }
+}
