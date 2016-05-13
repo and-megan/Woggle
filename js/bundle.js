@@ -97,17 +97,9 @@
 	Game.prototype.toggleGame = function(e) {
 		e.preventDefault();
 	
-		// if (this.timer.ticking) {
-		// 	$(".cube").addClass("hidden");
-		// 	this.level.clearLevel();
-		// 	$(".gameMessage").text("");
-		// 	this.removeKeyEvents();
-		// } else {
-	
-			this.gameboard.generateBoard();
-			$(".cube").removeClass("hidden");
-			this.keyEvents();
-		// }
+		this.gameboard.generateBoard();
+		$(".cube").removeClass("hidden");
+		this.keyEvents();
 		this.timer.toggleButton();
 		this.timer.ticking = !this.timer.ticking;
 	};
@@ -154,9 +146,9 @@
 	
 		$(".cube").addClass("hidden");
 		this.level.clearLevel();
-		$(".gameMessage").text("");
+		$(".gameMessage").text("GAME OVER");
 		this.removeKeyEvents();
-		window.location.reload();
+		setTimeout(window.location.reload(), 2000);
 	};
 	
 	
@@ -422,7 +414,11 @@
 		this.dictionary = dictionary;
 		this.currentWordPositions = [];
 		this.words = [];
+		this.score = 0;
+		this.wordCount = 0;
 		this.showGuessedWords();
+		$(".currentScore").text("Score: 0");
+		$(".currentCount").text("Word Count: 0");
 	}
 	
 	Level.prototype.showGuessedWords = function() {
@@ -465,7 +461,7 @@
 	
 			if (this.words.indexOf(this.currentWord) === -1) {
 				this.words.push(this.currentWord);
-	
+				this.calculateScore(this.currentWord);
 				var $guessedWords = $(".guessedWords");
 				var $guessedWord = "<li>" + this.currentWord + "</li>";
 				$guessedWords.append($guessedWord);
@@ -484,6 +480,26 @@
 		return this.wordCreation;
 	};
 	
+	Level.prototype.calculateScore = function (word) {
+		if (word.length < 5) {
+			this.score += 1;
+		} else if (word.length === 5) {
+			this.score += 2;
+		} else if (word.length === 6) {
+			this.score += 3;
+		} else if (word.length === 7) {
+			this.score += 5;
+		} else {
+			this.score += 11;
+		}
+		this.wordCount++;
+		this.updateScore(this.score, this.wordCount);
+	};
+	
+	Level.prototype.updateScore = function(score, wordCount) {
+		$(".currentScore").text("Score: " + score);
+		$(".currentCount").text("Word Count: " + wordCount);
+	};
 	
 	Level.prototype.clearLevel = function() {
 		this.words = [];

@@ -70,7 +70,8 @@ li.cube {
 	text-align: center;
 }
 .currentWord {
-	height: 30px;
+	height: 25px;
+	margin-top: 15px;
 	text-align: center;
 }
 
@@ -139,4 +140,9 @@ ul {
 }
 .timer-spot {
 	height: 15px;
+}
+.scoreContainer {
+  position: absolute;
+  left: 860px;
+  top: 180px;
 }

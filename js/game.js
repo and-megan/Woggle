@@ -30,17 +30,9 @@ Game.prototype.keyEvents = function() {
 Game.prototype.toggleGame = function(e) {
 	e.preventDefault();
 
-	// if (this.timer.ticking) {
-	// 	$(".cube").addClass("hidden");
-	// 	this.level.clearLevel();
-	// 	$(".gameMessage").text("");
-	// 	this.removeKeyEvents();
-	// } else {
-
-		this.gameboard.generateBoard();
-		$(".cube").removeClass("hidden");
-		this.keyEvents();
-	// }
+	this.gameboard.generateBoard();
+	$(".cube").removeClass("hidden");
+	this.keyEvents();
 	this.timer.toggleButton();
 	this.timer.ticking = !this.timer.ticking;
 };
@@ -87,9 +79,9 @@ Game.prototype.finishGame = function() {
 
 	$(".cube").addClass("hidden");
 	this.level.clearLevel();
-	$(".gameMessage").text("");
+	$(".gameMessage").text("GAME OVER");
 	this.removeKeyEvents();
-	window.location.reload();
+	setTimeout(window.location.reload(), 2000);
 };
 
 
