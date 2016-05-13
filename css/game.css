@@ -24,7 +24,7 @@ font-family: 'Cabin';
   display: flex;
 	flex-wrap: wrap;
 	max-width: 450px;
-	margin-left: 390px;
+	margin-left: 380px;
 }
 
 .hidden {
@@ -39,18 +39,20 @@ font-family: 'Cabin';
 
 
 li.cube {
-
+  vertical-align: middle;
   min-width: 50px;
   min-height: 50px;
   padding: 10px;
+  padding-right: 0px;
+  padding-left: 30px;
   display: flex;
   margin: 15px;
   text-align: center;
   font-size: 30px;
   border-radius: 3px;
-	-webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
-	-moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
-	box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  -webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  -moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
 }
 
 .hot {
