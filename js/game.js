@@ -36,13 +36,13 @@ Game.prototype.toggleGame = function(e) {
 	// this.removeKeyEvents();
 	// $(".cube").addClass("hidden");
 
-
 	if (this.timer.ticking) {
 		$(".cube").addClass("hidden");
 		this.level.clearLevel();
 		$(".gameMessage").text("");
 		this.removeKeyEvents();
 	} else {
+
 		this.gameboard.generateBoard();
 		$(".cube").removeClass("hidden");
 		this.keyEvents();
@@ -90,9 +90,11 @@ Game.prototype.addToWord = function(e) {
 
 Game.prototype.finishGame = function() {
 
+
+	$(".cube").addClass("hidden");
+	this.level.clearLevel();
+	$(".gameMessage").text("");
 	this.removeKeyEvents();
-	$(".cube").addClass("gameOver");
-	this.timer.stopPlaying();
 
 };
 

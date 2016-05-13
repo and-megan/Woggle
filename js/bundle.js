@@ -104,13 +104,13 @@
 		// this.removeKeyEvents();
 		// $(".cube").addClass("hidden");
 	
-	
 		if (this.timer.ticking) {
 			$(".cube").addClass("hidden");
 			this.level.clearLevel();
 			$(".gameMessage").text("");
 			this.removeKeyEvents();
 		} else {
+	
 			this.gameboard.generateBoard();
 			$(".cube").removeClass("hidden");
 			this.keyEvents();
@@ -158,9 +158,11 @@
 	
 	Game.prototype.finishGame = function() {
 	
+	
+		$(".cube").addClass("hidden");
+		this.level.clearLevel();
+		$(".gameMessage").text("");
 		this.removeKeyEvents();
-		$(".cube").addClass("gameOver");
-		this.timer.stopPlaying();
 	
 	};
 	
@@ -251,6 +253,7 @@
 		this.ticking = false;
 	
 		clearInterval(this.timeInterval);
+		this.cb();
 		$(".timer").removeClass("tickingTimeBomb");
 		this.seconds = 180;
 		$('.beginGame').removeClass("hide-begin");

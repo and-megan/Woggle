@@ -130,3 +130,6 @@ button.beginGame:hover {
 .gameOver {
 	background-color: #fa8795;
 }
+ul {
+  list-style: none;
+}

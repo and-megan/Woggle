@@ -71,6 +71,7 @@ Timer.prototype.stopPlaying = function() {
 	this.ticking = false;
 
 	clearInterval(this.timeInterval);
+	this.cb();
 	$(".timer").removeClass("tickingTimeBomb");
 	this.seconds = 180;
 	$('.beginGame').removeClass("hide-begin");
