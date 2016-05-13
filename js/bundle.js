@@ -148,7 +148,7 @@
 		this.level.clearLevel();
 		$(".gameMessage").text("GAME OVER");
 		this.removeKeyEvents();
-		setTimeout(window.location.reload(), 2000);
+		setTimeout(window.location.reload(), 4000);
 	};
 	
 	
