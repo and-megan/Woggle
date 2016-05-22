@@ -107,7 +107,7 @@
 		//this adds letters to displayed word
 		if(this.wordIsStarted) {
 			this.gameboard.addToWord(e);
-			$(".currentWord").text(this.level.currentWord);
+			$(".currentWord").text(this.gameboard.currentWord);
 		}
 	};
 	

@@ -82,11 +82,11 @@ li.cube {
 	width: 100px;
 }
 .guessedWords {
-  width: 115px;
+  width: 130px;
   position: absolute;
   text-align: center;
   top: 90px;
-  left: 5px;
+  /*left: 5px;*/
 }
 .guessedWords li:nth-child(even) {
 	background-color: #c5b9d0;
@@ -94,7 +94,7 @@ li.cube {
 	padding: 2px;
 }
 .guessedWords li:nth-child(odd) {
-	background-color: #a796b9;
+	background-color: #b1a2c1;
 	border-radius: 3px;
 	padding: 2px;
 }
@@ -109,10 +109,17 @@ li.cube {
 	font-weight: bold;
 	font-size: 19px;
 }
+
 .currentWord {
+	position: absolute;
+	top: 180px;
 	height: 25px;
-	margin-top: 15px;
+	left: 490px;
+	width: 300px;
 	text-align: center;
+  font-size: 19px;
+  font-weight: bold;
+	color: #826898;
 }
 
 .question {
@@ -141,6 +148,7 @@ li.cube {
 }
 .instructions-rules {
 	font-weight: bold;
+	font-size: 18px;
 	width: 25%;
   text-align: center;
   color: transparent;
@@ -190,6 +198,7 @@ li.cube {
 }
 .scoring-rules {
 	font-weight: bold;
+	font-size: 18px;
   width: 25%;
   text-align: center;
   color: transparent;
@@ -211,7 +220,7 @@ li.cube {
 	padding: 10px;
   position: absolute;
 	text-align: justify;
-  top: 430px;
+  top: 435px;
 }
 .scoring-rules2 {
   width: 25%;
@@ -223,7 +232,7 @@ li.cube {
 	padding: 10px;
   position: absolute;
 	text-align: justify;
-  top: 460px;
+  top: 465px;
 }
 .scoring-rules3 {
   width: 25%;
@@ -235,7 +244,7 @@ li.cube {
 	padding: 10px;
   position: absolute;
 	text-align: justify;
-  top: 490px;
+  top: 495px;
 }
 .scoring-rules4 {
   width: 25%;
@@ -247,7 +256,7 @@ li.cube {
 	padding: 10px;
   position: absolute;
 	text-align: justify;
-  top: 520px;
+  top: 525px;
 }
 .scoring-rules5 {
   width: 25%;
@@ -259,7 +268,7 @@ li.cube {
 	padding: 10px;
   position: absolute;
 	text-align: justify;
-  top: 550px;
+  top: 555px;
 }
 button.beginGame {
   position: absolute;
@@ -305,15 +314,18 @@ ul {
 }
 .scoreContainer {
   position: absolute;
-  left: 100px;
+  left: 80px;
 	text-align: left;
-  border: solid 1px darkgray;
-  top: 75px;
+  top: 55px;
 	border-radius: 3px;
 }
 li.currentScore {
+	margin-left: 25px;
+	margin-bottom: 10px;
   padding: 5px;
+	font-size: 20px
 }
 li.currentCount {
   padding: 5px;
+	font-size: 20px;
 }
