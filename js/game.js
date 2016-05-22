@@ -33,18 +33,19 @@ Game.prototype.startGame = function(e) {
 	this.timer.ticking = true;
 };
 
-Game.prototype.appendLetters = function(e) {
-	if(this.wordIsStarted) {
-		this.gameboard.addToWord(e);
-		$(".currentWord").text(this.level.currentWord);
-	}
-};
-
 Game.prototype.startWord = function(e) {
 	e.preventDefault();
 	this.gameboard.startWord(e);
 	this.wordIsStarted = true;
 	$(".error").text("");
+};
+
+Game.prototype.appendLetters = function(e) {
+	//this adds letters to displayed word
+	if(this.wordIsStarted) {
+		this.gameboard.addToWord(e);
+		$(".currentWord").text(this.level.currentWord);
+	}
 };
 
 Game.prototype.endWord = function(e) {
@@ -55,6 +56,7 @@ Game.prototype.endWord = function(e) {
 };
 
 Game.prototype.addToWord = function(e) {
+	//adds to currentWord (which will be submitted & checked on submission)
 	e.preventDefault();
 	var currentPalabra = this.level.currentWord;
 	$(".cube").each(function (i){
@@ -82,4 +84,4 @@ Game.prototype.finishGame = function() {
 };
 
 
-module.exports = window.Game = Game;
+module.exports = Game;

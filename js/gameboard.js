@@ -1,4 +1,4 @@
-//GAMEBOARD (Board creation and physical location of cubes)
+//GAMEBOARD (generates board and keeps track of physical location of cubes)
 var letters = {
 	"e": 19,
 	"t": 13,
@@ -73,20 +73,20 @@ Gameboard.prototype.generateBoard = function() {
 
 Gameboard.prototype.addToWord = function(e) {
 	if (this.wordCreation) {
-		var $playingCube = $(e.currentTarget);
 		$(".cube").removeClass("last");
+		var $playingCube = $(e.currentTarget);
+		//add class "last" to most recently selected cube in order to distinguish it so position data can be parsed.
 		$playingCube.addClass("hot").addClass("last");
 		var cubePosition = $(".last").data("pos");
-		//add class "last" to most recently selected cube in order to distinguish to parse its position information
 		var curX = cubePosition[0];
 		var curY = cubePosition[1];
 		var curWordLength = this.currentWord.length - 2;
 		var wordPos = this.currentWordPositions;
+		//checks position validity of the selected cube
 		if (this.currentWordPositions.length > 0) {
 			var prevX = wordPos.slice(-1)[0][0];
 			var prevY = wordPos.slice(-1)[0][1];
 		}
-		//checks position validity of the selected cube
 		if (this.currentWordPositions.length > 0 && (Math.abs(curX - prevX) > 1 || Math.abs(curY - prevY) > 1)) {
 			$(".error").text("Cannot select non-adjacent letters");
 			this.currentWord = "";
@@ -136,4 +136,4 @@ Gameboard.prototype.removeCubes = function () {
 	$(".cube").remove();
 };
 
-module.exports = window.Gameboard = Gameboard;
+module.exports = Gameboard;

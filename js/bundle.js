@@ -45,8 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Game = __webpack_require__(1);
-	var Level = __webpack_require__(4);
-	var Gameboard = __webpack_require__(3);
+	// var Level = require('./level.js');
+	// var Gameboard = require('./gameboard.js');
 	var boggleDictionary = __webpack_require__(5);
 	
 	
@@ -96,18 +96,19 @@
 		this.timer.ticking = true;
 	};
 	
-	Game.prototype.appendLetters = function(e) {
-		if(this.wordIsStarted) {
-			this.gameboard.addToWord(e);
-			$(".currentWord").text(this.level.currentWord);
-		}
-	};
-	
 	Game.prototype.startWord = function(e) {
 		e.preventDefault();
 		this.gameboard.startWord(e);
 		this.wordIsStarted = true;
 		$(".error").text("");
+	};
+	
+	Game.prototype.appendLetters = function(e) {
+		//this adds letters to displayed word
+		if(this.wordIsStarted) {
+			this.gameboard.addToWord(e);
+			$(".currentWord").text(this.level.currentWord);
+		}
 	};
 	
 	Game.prototype.endWord = function(e) {
@@ -118,6 +119,7 @@
 	};
 	
 	Game.prototype.addToWord = function(e) {
+		//adds to currentWord (which will be submitted & checked on submission)
 		e.preventDefault();
 		var currentPalabra = this.level.currentWord;
 		$(".cube").each(function (i){
@@ -145,7 +147,7 @@
 	};
 	
 	
-	module.exports = window.Game = Game;
+	module.exports = Game;
 
 
 /***/ },
@@ -267,7 +269,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	//GAMEBOARD (Board creation and physical location of cubes)
+	//GAMEBOARD (generates board and keeps track of physical location of cubes)
 	var letters = {
 		"e": 19,
 		"t": 13,
@@ -342,20 +344,20 @@
 	
 	Gameboard.prototype.addToWord = function(e) {
 		if (this.wordCreation) {
-			var $playingCube = $(e.currentTarget);
 			$(".cube").removeClass("last");
+			var $playingCube = $(e.currentTarget);
+			//add class "last" to most recently selected cube in order to distinguish it so position data can be parsed.
 			$playingCube.addClass("hot").addClass("last");
 			var cubePosition = $(".last").data("pos");
-			//add class "last" to most recently selected cube in order to distinguish to parse its position information
 			var curX = cubePosition[0];
 			var curY = cubePosition[1];
 			var curWordLength = this.currentWord.length - 2;
 			var wordPos = this.currentWordPositions;
+			//checks position validity of the selected cube
 			if (this.currentWordPositions.length > 0) {
 				var prevX = wordPos.slice(-1)[0][0];
 				var prevY = wordPos.slice(-1)[0][1];
 			}
-			//checks position validity of the selected cube
 			if (this.currentWordPositions.length > 0 && (Math.abs(curX - prevX) > 1 || Math.abs(curY - prevY) > 1)) {
 				$(".error").text("Cannot select non-adjacent letters");
 				this.currentWord = "";
@@ -405,7 +407,7 @@
 		$(".cube").remove();
 	};
 	
-	module.exports = window.Gameboard = Gameboard;
+	module.exports = Gameboard;
 
 
 /***/ },
@@ -416,7 +418,6 @@
 	function Level($el, dictionary) {
 		this.$el = $el;
 		this.dictionary = dictionary;
-		// this.currentWordPositions = [];
 		this.words = [];
 		this.score = 0;
 		this.wordCount = 0;
@@ -424,7 +425,7 @@
 		$(".currentScore").text("Score: 0");
 		$(".currentCount").text("Word Count: 0");
 	}
-	// TODO: I think I'm deleting this ul somewhere for the second round
+	
 	Level.prototype.showGuessedWords = function() {
 		var $guessedWords = $("<ul>").addClass("guessedWord");
 		this.$el.append($guessedWords);
@@ -465,10 +466,6 @@
 	Level.prototype.updateWordsAndScore = function () {
 	
 	};
-	//
-	// Level.prototype.creatingWord = function() {
-	// 	return this.wordCreation;
-	// };
 	
 	Level.prototype.calculateScore = function (word) {
 		if (word.length < 5) {
@@ -499,8 +496,8 @@
 		this.showGuessedWords();
 		$(".error").text("");
 	};
-	// TODO:take this off window when done testing
-	module.exports = window.Level = Level;
+	
+	module.exports = Level;
 
 
 /***/ },

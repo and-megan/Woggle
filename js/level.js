@@ -2,7 +2,6 @@
 function Level($el, dictionary) {
 	this.$el = $el;
 	this.dictionary = dictionary;
-	// this.currentWordPositions = [];
 	this.words = [];
 	this.score = 0;
 	this.wordCount = 0;
@@ -10,7 +9,7 @@ function Level($el, dictionary) {
 	$(".currentScore").text("Score: 0");
 	$(".currentCount").text("Word Count: 0");
 }
-// TODO: I think I'm deleting this ul somewhere for the second round
+
 Level.prototype.showGuessedWords = function() {
 	var $guessedWords = $("<ul>").addClass("guessedWord");
 	this.$el.append($guessedWords);
@@ -51,10 +50,6 @@ Level.prototype.bsearch = function (dictionary, checkWord) {
 Level.prototype.updateWordsAndScore = function () {
 
 };
-//
-// Level.prototype.creatingWord = function() {
-// 	return this.wordCreation;
-// };
 
 Level.prototype.calculateScore = function (word) {
 	if (word.length < 5) {
@@ -85,5 +80,5 @@ Level.prototype.clearLevel = function() {
 	this.showGuessedWords();
 	$(".error").text("");
 };
-// TODO:take this off window when done testing
-module.exports = window.Level = Level;
+
+module.exports = Level;
