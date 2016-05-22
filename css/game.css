@@ -81,10 +81,21 @@ li.cube {
 	width: 100px;
 }
 .guessedWords {
-	display: flex;
-	flex-direction: column;
-	width: 100px;
-	text-align: center;
+  width: 115px;
+  position: absolute;
+  text-align: center;
+  top: 90px;
+  left: 5px;
+}
+.guessedWords li:nth-child(even) {
+	background-color: #c5b9d0;
+	border-radius: 3px;
+	padding: 2px;
+}
+.guessedWords li:nth-child(odd) {
+	background-color: #a796b9;
+	border-radius: 3px;
+	padding: 2px;
 }
 .error {
   position: absolute;
@@ -292,6 +303,7 @@ ul {
 .scoreContainer {
   position: absolute;
   left: 100px;
+	text-align: left;
   border: solid 1px darkgray;
   top: 75px;
 	border-radius: 3px;
@@ -301,12 +313,4 @@ li.currentScore {
 }
 li.currentCount {
   padding: 5px;
-}
-.guessedWords li:nth-child(even) {
-	background-color: #c5b9d0;
-	border-radius: 3px;
-}
-.guessedWords li:nth-child(odd) {
-	background-color: #a796b9;
-	border-radius: 3px;
 }
