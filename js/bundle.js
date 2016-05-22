@@ -217,6 +217,7 @@
 		this.ticking = true;
 		this.timeInterval = setInterval(this.tick.bind(this), 1000);
 		$('.beginGame').addClass("hide-begin");
+		$('.timer').removeClass("timer-spot-hidden");
 	};
 	
 	Timer.prototype.stopPlaying = function() {
@@ -227,6 +228,7 @@
 		this.seconds = this.startTime;
 		$('.beginGame').removeClass("hide-begin");
 		$('.beginGame').text("Begin!");
+		$('.timer').addClass("timer-spot-hidden");
 		// $("#game-over-modal").modal();
 		// return;
 	};
