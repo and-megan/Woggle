@@ -4,12 +4,17 @@ body {
 }
 
 h1 {
-	text-align: center;
-	padding-top: 10px;
+  position: absolute;
+  text-align: center;
+  margin-left: 587px;
+  top: -7px;
 }
 
 h4 {
-	text-align: center;
+  text-align: center;
+  position: absolute;
+  top: 60px;
+  left: 475px;
 }
 
 * {
@@ -66,10 +71,13 @@ li.cube {
 .guesses-all {
   position: absolute;
   margin-left: 900px;
+	width: 100px;
 }
 .guessedWords {
 	display: flex;
 	flex-direction: column;
+	width: 100px;
+	text-align: center;
 }
 .error {
 	height: 20px;
@@ -98,11 +106,11 @@ li.cube {
 .question {
   text-align: center;
   margin-left: 50px;
-  font-size: 20px;
+  font-size: 30px;
   background-color: orange;
-	color: white;
-  border-radius: 30px;
-  width: 25px;
+  color: white;
+  border-radius: 50px;
+  width: 37px;
 }
 
 .a2 {
@@ -116,7 +124,7 @@ li.cube {
 
 button.beginGame {
   position: absolute;
-  top: 75px;
+  top: 105px;
   left: 586px;
   padding: 10px 20px 10px 20px;
   background: #faec87;
@@ -125,7 +133,7 @@ button.beginGame {
   color: #686868;
   margin: 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 18px;
   max-height: 45px;
   -webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
   -moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
@@ -149,6 +157,15 @@ ul {
 }
 .scoreContainer {
   position: absolute;
-  left: 860px;
-  top: 180px;
+  left: 100px;
+  border: solid 1px darkgray;
+  top: 139px;
+}
+.guessedWords li:nth-child(even) {
+	background-color: #c5b9d0;
+	border-radius: 3px;
+}
+.guessedWords li:nth-child(odd) {
+	background-color: #a796b9;
+	border-radius: 3px;
 }

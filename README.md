@@ -12,7 +12,8 @@ Woggle is a single-player browser game based on the famous Boggle.
 5. 11 points for words longer than eight letters.
 
 #Technology
-Woggle was built using Javascript and jQuery. Woggle implements a binary search to look up words in O(log n) time.
+Woggle was built using Javascript and jQuery. Woggle implements a binary search to efficiently check validity of user's inputted words in O(log n) time.
+
 ``` javascript
 Level.prototype.bsearch = function (dictionary, checkWord) {
 

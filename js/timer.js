@@ -1,7 +1,8 @@
 var Timer= function($el, cb, $timerSpot) {
 	this.$el = $el;
 	this.cb = cb;
-	this.seconds = 180;
+	this.startTime = 180;
+	this.seconds = this.startTime;
 	this.ticking = false;
 	this.showTime();
 	this.$timerSpot = $timerSpot;
@@ -16,7 +17,7 @@ Timer.prototype.showTime = function() {
 
 	$beginGame = $(beginGame).addClass("beginGame");
 
-	if (this.seconds === 180) {
+	if (this.seconds === this.startTime) {
 		this.$el.prepend($beginGame);
 	}
 };
@@ -59,23 +60,21 @@ Timer.prototype.currentTime = function () {
 };
 
 Timer.prototype.beginPlaying = function() {
-
 	this.ticking = true;
 	this.timeInterval = setInterval(this.tick.bind(this), 1000);
 	$('.beginGame').addClass("hide-begin");
-
 };
 
 Timer.prototype.stopPlaying = function() {
-
 	this.ticking = false;
-
 	clearInterval(this.timeInterval);
 	this.cb();
-	$(".timer").removeClass("tickingTimeBomb");
-	this.seconds = 180;
+	$(".timer").removeClass("ticking-time-bomb");
+	this.seconds = this.startTime;
 	$('.beginGame').removeClass("hide-begin");
 	$('.beginGame').text("Begin!");
+	// $("#game-over-modal").modal();
+	// return;
 };
 
 Timer.prototype.tick = function() {
@@ -85,15 +84,13 @@ Timer.prototype.tick = function() {
 		this.stopPlaying();
 	}
 	if (this.seconds <= 10) {
-		$(".timer").removeClass("regularTimer");
-		$(".timer").addClass("tickingTimeBomb");
+		$(".timer").removeClass("regular-timer");
+		$(".timer").addClass("ticking-time-bomb");
 	}
 	if (this.seconds > 10) {
-		$(".timer").addClass("regularTimer");
+		$(".timer").addClass("regular-timer");
 	}
-
 };
-
 
 Timer.prototype.toggleButton = function() {
 	if (this.ticking) {

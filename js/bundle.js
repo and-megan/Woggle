@@ -51,13 +51,9 @@
 	
 	
 	$(function() {
-	
 		var container = $(".woggle-container");
 		var timerSpot = $(".timer-spot");
-		var level = new Level(container, boggleDictionary);
-		var gameboard = new Gameboard(container, boggleDictionary, level);
-		var game = new Game(gameboard, container, boggleDictionary, level, timerSpot);
-	
+		var game = new Game(container, boggleDictionary, timerSpot);
 	});
 
 
@@ -69,42 +65,38 @@
 	var Gameboard = __webpack_require__(3);
 	var Level = __webpack_require__(4);
 	
-	
-	
-	var Game = function($gameboard, $container, dictionary, level, $timerSpot) {
-		this.level = level;
-		this.$el = $container;
-		// var game = this;
-		this.dictionary = dictionary;
-		// var $guessed = $("#guessed");
+	var Game = function($container, dictionary, $timerSpot) {
 		var cb = this.finishGame.bind(this);
+		this.level = new Level($container, dictionary);
 		this.timer = new Timer($container, cb, $timerSpot);
-		this.gameboard = $gameboard;
-		this.$el.on("click", ".beginGame", this.toggleGame.bind(this));
+		this.gameboard = new Gameboard($container, dictionary, this.level);
+		this.$el = $container;
+		this.dictionary = dictionary;
+		this.$el.on("click", ".beginGame", this.startGame.bind(this));
 		this.wordIsStarted = false;
 	};
 	
-	Game.prototype.keyEvents = function() {
+	Game.prototype.mouseEvents = function() {
 		this.$el.on("mousedown", ".cube", this.startWord.bind(this));
+		this.$el.on("mouseup", ".cube", this.endWord.bind(this));
 		$(".cube").on(
 			"mouseover",
-			this.appendContents.bind(this)
+			this.appendLetters.bind(this)
 		);
-	
-		this.$el.on("mouseup", this.endWord.bind(this));
 	};
 	
-	Game.prototype.toggleGame = function(e) {
+	Game.prototype.startGame = function(e) {
 		e.preventDefault();
-	
+		$(".error").text("");
+		$(".gameMessage").text("");
 		this.gameboard.generateBoard();
 		$(".cube").removeClass("hidden");
-		this.keyEvents();
+		this.mouseEvents();
 		this.timer.toggleButton();
-		this.timer.ticking = !this.timer.ticking;
+		this.timer.ticking = true;
 	};
 	
-	Game.prototype.appendContents = function(e) {
+	Game.prototype.appendLetters = function(e) {
 		if(this.wordIsStarted) {
 			this.gameboard.addToWord(e);
 			$(".currentWord").text(this.level.currentWord);
@@ -115,7 +107,6 @@
 		e.preventDefault();
 		this.gameboard.startWord(e);
 		this.wordIsStarted = true;
-	
 		$(".error").text("");
 	};
 	
@@ -124,41 +115,37 @@
 		this.wordIsStarted = false;
 		$(".currentWord").text("");
 		this.gameboard.endWord();
-	
 	};
 	
 	Game.prototype.addToWord = function(e) {
 		e.preventDefault();
 		var currentPalabra = this.level.currentWord;
 		$(".cube").each(function (i){
-				var curWort = currentPalabra;
-				this.addEventListener("mouseover", function() {
-					curWort += this.innerHTML;
-				}.bind(this));
-	
+			var curWort = currentPalabra;
+			this.addEventListener("mouseover", function() {
+				curWort += this.innerHTML;
+			}.bind(this));
 		});
-	
 		this.gameboard.addToWord(e);
 	};
 	
+	Game.prototype.removemouseEvents = function() {
+		this.$el.off("mousedown", ".cube", this.startWord);
+		this.$el.off("mouseup", ".cube", this.endWord);
+		this.$el.off("mouseenter", ".cube", this.appendLetters);
+	};
+	
 	Game.prototype.finishGame = function() {
-	
-	
 		$(".cube").addClass("hidden");
 		this.level.clearLevel();
+		this.gameboard.removeCubes();
 		$(".gameMessage").text("GAME OVER");
-		this.removeKeyEvents();
-		setTimeout(window.location.reload(), 4000);
+		this.removemouseEvents();
+		// TODO: add modal window to display score!
 	};
 	
 	
-	Game.prototype.removeKeyEvents = function() {
-		this.$el.off("mousedown", ".cube");
-		this.$el.off("mouseup", ".cube");
-		this.$el.off("mouseenter", ".cube");
-	};
-	
-	module.exports = Game;
+	module.exports = window.Game = Game;
 
 
 /***/ },
@@ -168,7 +155,8 @@
 	var Timer= function($el, cb, $timerSpot) {
 		this.$el = $el;
 		this.cb = cb;
-		this.seconds = 180;
+		this.startTime = 180;
+		this.seconds = this.startTime;
 		this.ticking = false;
 		this.showTime();
 		this.$timerSpot = $timerSpot;
@@ -183,7 +171,7 @@
 	
 		$beginGame = $(beginGame).addClass("beginGame");
 	
-		if (this.seconds === 180) {
+		if (this.seconds === this.startTime) {
 			this.$el.prepend($beginGame);
 		}
 	};
@@ -226,23 +214,21 @@
 	};
 	
 	Timer.prototype.beginPlaying = function() {
-	
 		this.ticking = true;
 		this.timeInterval = setInterval(this.tick.bind(this), 1000);
 		$('.beginGame').addClass("hide-begin");
-	
 	};
 	
 	Timer.prototype.stopPlaying = function() {
-	
 		this.ticking = false;
-	
 		clearInterval(this.timeInterval);
 		this.cb();
-		$(".timer").removeClass("tickingTimeBomb");
-		this.seconds = 180;
+		$(".timer").removeClass("ticking-time-bomb");
+		this.seconds = this.startTime;
 		$('.beginGame').removeClass("hide-begin");
 		$('.beginGame').text("Begin!");
+		// $("#game-over-modal").modal();
+		// return;
 	};
 	
 	Timer.prototype.tick = function() {
@@ -252,15 +238,13 @@
 			this.stopPlaying();
 		}
 		if (this.seconds <= 10) {
-			$(".timer").removeClass("regularTimer");
-			$(".timer").addClass("tickingTimeBomb");
+			$(".timer").removeClass("regular-timer");
+			$(".timer").addClass("ticking-time-bomb");
 		}
 		if (this.seconds > 10) {
-			$(".timer").addClass("regularTimer");
+			$(".timer").addClass("regular-timer");
 		}
-	
 	};
-	
 	
 	Timer.prototype.toggleButton = function() {
 		if (this.ticking) {
@@ -281,7 +265,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	
+	//GAMEBOARD (Board creation and physical location of cubes)
 	var letters = {
 		"e": 19,
 		"t": 13,
@@ -319,19 +303,24 @@
 	});
 	
 	var Gameboard = function($el, dictionary, level) {
-		this.cubeMemory = [];
 		this.$el = $el;
 		this.dictionary = dictionary;
 		this.level = level;
+		this.wordCreation = false;
+		this.currentWord = "";
+		this.currentWordPositions = [];
 		this.generateBoard();
 	};
 	
 	Gameboard.prototype.removeSpaces = function () {
+		$(".cube").empty();
+		$(".cube").remove();
 		$(".space").empty();
 		$(".space").remove();
 	};
 	
 	Gameboard.prototype.generateBoard = function() {
+		//creating the 4 * 4 grid of cubes with a random letter
 		this.removeSpaces();
 		this.cubeValues = {};
 		var $space = $("<ul>").addClass("space");
@@ -342,7 +331,6 @@
 				var cubeLi = "<li>" + woggleAlphabet[index] + "</li>";
 				var $cube = $(cubeLi).addClass("cube").data("pos", [i, j]);
 				$cube.addClass("hidden");
-				this.cubeMemory.push($cube);
 				$space.append($cube);
 			}
 		}
@@ -351,37 +339,31 @@
 	};
 	
 	Gameboard.prototype.addToWord = function(e) {
-		if (this.level.wordCreation) {
+		if (this.wordCreation) {
 			var $playingCube = $(e.currentTarget);
-	
 			$(".cube").removeClass("last");
 			$playingCube.addClass("hot").addClass("last");
 			var cubePosition = $(".last").data("pos");
-	
+			//add class "last" to most recently selected cube in order to distinguish to parse its position information
 			var curX = cubePosition[0];
 			var curY = cubePosition[1];
-			var curWordLength = this.level.currentWord.length - 2;
-			var wordPos = this.level.currentWordPositions;
-			if (this.level.currentWordPositions.length > 0) {
-	
+			var curWordLength = this.currentWord.length - 2;
+			var wordPos = this.currentWordPositions;
+			if (this.currentWordPositions.length > 0) {
 				var prevX = wordPos.slice(-1)[0][0];
 				var prevY = wordPos.slice(-1)[0][1];
 			}
-	
-			if (this.level.currentWordPositions.length > 0 && (Math.abs(curX - prevX) > 1 || Math.abs(curY - prevY) > 1)) {
+			//checks position validity of the selected cube
+			if (this.currentWordPositions.length > 0 && (Math.abs(curX - prevX) > 1 || Math.abs(curY - prevY) > 1)) {
 				$(".error").text("Cannot select non-adjacent letters");
-				this.level.currentWord = "";
-	
+				this.currentWord = "";
 				this.endWord();
-			} else if (this.level.currentWordPositions.indexOf(cubePosition) === -1) {
-	
-				this.level.currentWord += e.currentTarget.innerHTML;
-				this.level.currentWordPositions.push(cubePosition);
-	
+			} else if (this.currentWordPositions.indexOf(cubePosition) === -1) {
+				this.currentWord += e.currentTarget.innerHTML;
+				this.currentWordPositions.push(cubePosition);
 			} else {
-	
 				$(".error").text("Cannot use tile more than one time");
-				this.level.currentWord = "";
+				this.currentWord = "";
 				this.endWord();
 			}
 		}
@@ -389,17 +371,39 @@
 	};
 	
 	Gameboard.prototype.startWord = function(e) {
-		this.level.startWord();
+		this.wordCreation = true;
+		this.currentWord = "";
+		this.currentWordPositions = [];
 		this.addToWord(e);
 	};
 	
 	Gameboard.prototype.endWord = function() {
-		this.level.endWord();
+		this.wordCreation = false;
+		var thisLevel = this.level;
+	
+		if (this.currentWord.length < 3 && this.currentWord.length > 0) {
+			$('.error').text("That word is not long enough");
+		} else if (thisLevel.bsearch(this.dictionary, this.currentWord)) {
+	
+			if (thisLevel.words.indexOf(this.currentWord) === -1) {
+				thisLevel.registerGuessedWord(this.currentWord);
+			} else {
+				$('.error').text("That word has already been found");
+			}
+	
+		} else {
+			$(".error").text("Invalid word");
+		}
+		this.currentWord = "";
 		$(".cube").removeClass("hot");
 	};
 	
+	Gameboard.prototype.removeCubes = function () {
+		$(".cube").empty();
+		$(".cube").remove();
+	};
 	
-	module.exports = Gameboard;
+	module.exports = window.Gameboard = Gameboard;
 
 
 /***/ },
@@ -409,10 +413,8 @@
 	
 	function Level($el, dictionary) {
 		this.$el = $el;
-		this.wordCreation = false;
-		this.currentWord = "";
 		this.dictionary = dictionary;
-		this.currentWordPositions = [];
+		// this.currentWordPositions = [];
 		this.words = [];
 		this.score = 0;
 		this.wordCount = 0;
@@ -420,26 +422,33 @@
 		$(".currentScore").text("Score: 0");
 		$(".currentCount").text("Word Count: 0");
 	}
-	
+	// TODO: I think I'm deleting this ul somewhere for the second round
 	Level.prototype.showGuessedWords = function() {
 		var $guessedWords = $("<ul>").addClass("guessedWord");
 		this.$el.append($guessedWords);
 	};
 	
-	Level.prototype.startWord = function() {
-		this.wordCreation = true;
-		this.currentWord = "";
-		this.currentWordPositions = [];
+	Level.prototype.registerGuessedWord = function (word) {
+		this.words.push(word);
+		this.calculateScore(word);
+		this.createGuessedWordItem(word);
+	};
+	
+	Level.prototype.createGuessedWordItem = function (word) {
+		var $guessedWords = $(".guessedWords");
+		var $guessedWord = "<li>" + word + "</li>";
+		$guessedWords.append($guessedWord);
 	};
 	
 	Level.prototype.bsearch = function (dictionary, checkWord) {
-	
+		//checks if selected word exists in the dictionary
 	  if (dictionary.length === 0) {
 	  return false;
 		}
 	
 	  var probeIdx = Math.floor(dictionary.length / 2);
 	  var probe = dictionary[probeIdx];
+	
 	  if (checkWord.localeCompare(probe) === 0) {
 	    return true;
 	  } else if (checkWord.localeCompare(probe) === -1) {
@@ -451,34 +460,13 @@
 		}
 	};
 	
-	Level.prototype.endWord = function() {
-		this.wordCreation = false;
+	Level.prototype.updateWordsAndScore = function () {
 	
-		if (this.currentWord.length < 3 && this.currentWord.length > 0) {
-			$('.error').text("That word is not long enough");
-	
-		} else if (this.bsearch(this.dictionary, this.currentWord)) {
-	
-			if (this.words.indexOf(this.currentWord) === -1) {
-				this.words.push(this.currentWord);
-				this.calculateScore(this.currentWord);
-				var $guessedWords = $(".guessedWords");
-				var $guessedWord = "<li>" + this.currentWord + "</li>";
-				$guessedWords.append($guessedWord);
-	
-			} else {
-				$('.error').text("That word has already been found");
-			}
-		} else {
-			$(".error").text("Invalid word");
-		}
-	
-		this.currentWord = "";
 	};
-	
-	Level.prototype.creatingWord = function() {
-		return this.wordCreation;
-	};
+	//
+	// Level.prototype.creatingWord = function() {
+	// 	return this.wordCreation;
+	// };
 	
 	Level.prototype.calculateScore = function (word) {
 		if (word.length < 5) {
@@ -506,12 +494,11 @@
 		this.currentWord = "";
 		$(".guessedWords").empty();
 		$(".guessedWords").remove();
-	
 		this.showGuessedWords();
 		$(".error").text("");
 	};
-	
-	module.exports = Level;
+	// TODO:take this off window when done testing
+	module.exports = window.Level = Level;
 
 
 /***/ },

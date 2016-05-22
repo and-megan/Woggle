@@ -1,10 +1,8 @@
 
 function Level($el, dictionary) {
 	this.$el = $el;
-	this.wordCreation = false;
-	this.currentWord = "";
 	this.dictionary = dictionary;
-	this.currentWordPositions = [];
+	// this.currentWordPositions = [];
 	this.words = [];
 	this.score = 0;
 	this.wordCount = 0;
@@ -12,26 +10,33 @@ function Level($el, dictionary) {
 	$(".currentScore").text("Score: 0");
 	$(".currentCount").text("Word Count: 0");
 }
-
+// TODO: I think I'm deleting this ul somewhere for the second round
 Level.prototype.showGuessedWords = function() {
 	var $guessedWords = $("<ul>").addClass("guessedWord");
 	this.$el.append($guessedWords);
 };
 
-Level.prototype.startWord = function() {
-	this.wordCreation = true;
-	this.currentWord = "";
-	this.currentWordPositions = [];
+Level.prototype.registerGuessedWord = function (word) {
+	this.words.push(word);
+	this.calculateScore(word);
+	this.createGuessedWordItem(word);
+};
+
+Level.prototype.createGuessedWordItem = function (word) {
+	var $guessedWords = $(".guessedWords");
+	var $guessedWord = "<li>" + word + "</li>";
+	$guessedWords.append($guessedWord);
 };
 
 Level.prototype.bsearch = function (dictionary, checkWord) {
-
+	//checks if selected word exists in the dictionary
   if (dictionary.length === 0) {
   return false;
 	}
 
   var probeIdx = Math.floor(dictionary.length / 2);
   var probe = dictionary[probeIdx];
+
   if (checkWord.localeCompare(probe) === 0) {
     return true;
   } else if (checkWord.localeCompare(probe) === -1) {
@@ -43,34 +48,13 @@ Level.prototype.bsearch = function (dictionary, checkWord) {
 	}
 };
 
-Level.prototype.endWord = function() {
-	this.wordCreation = false;
+Level.prototype.updateWordsAndScore = function () {
 
-	if (this.currentWord.length < 3 && this.currentWord.length > 0) {
-		$('.error').text("That word is not long enough");
-
-	} else if (this.bsearch(this.dictionary, this.currentWord)) {
-
-		if (this.words.indexOf(this.currentWord) === -1) {
-			this.words.push(this.currentWord);
-			this.calculateScore(this.currentWord);
-			var $guessedWords = $(".guessedWords");
-			var $guessedWord = "<li>" + this.currentWord + "</li>";
-			$guessedWords.append($guessedWord);
-
-		} else {
-			$('.error').text("That word has already been found");
-		}
-	} else {
-		$(".error").text("Invalid word");
-	}
-
-	this.currentWord = "";
 };
-
-Level.prototype.creatingWord = function() {
-	return this.wordCreation;
-};
+//
+// Level.prototype.creatingWord = function() {
+// 	return this.wordCreation;
+// };
 
 Level.prototype.calculateScore = function (word) {
 	if (word.length < 5) {
@@ -98,9 +82,8 @@ Level.prototype.clearLevel = function() {
 	this.currentWord = "";
 	$(".guessedWords").empty();
 	$(".guessedWords").remove();
-
 	this.showGuessedWords();
 	$(".error").text("");
 };
-
-module.exports = Level;
+// TODO:take this off window when done testing
+module.exports = window.Level = Level;

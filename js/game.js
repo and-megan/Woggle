@@ -2,42 +2,38 @@ var Timer = require('./timer.js');
 var Gameboard = require("./gameboard.js");
 var Level = require('./level.js');
 
-
-
-var Game = function($gameboard, $container, dictionary, level, $timerSpot) {
-	this.level = level;
-	this.$el = $container;
-	// var game = this;
-	this.dictionary = dictionary;
-	// var $guessed = $("#guessed");
+var Game = function($container, dictionary, $timerSpot) {
 	var cb = this.finishGame.bind(this);
+	this.level = new Level($container, dictionary);
 	this.timer = new Timer($container, cb, $timerSpot);
-	this.gameboard = $gameboard;
-	this.$el.on("click", ".beginGame", this.toggleGame.bind(this));
+	this.gameboard = new Gameboard($container, dictionary, this.level);
+	this.$el = $container;
+	this.dictionary = dictionary;
+	this.$el.on("click", ".beginGame", this.startGame.bind(this));
 	this.wordIsStarted = false;
 };
 
-Game.prototype.keyEvents = function() {
+Game.prototype.mouseEvents = function() {
 	this.$el.on("mousedown", ".cube", this.startWord.bind(this));
+	this.$el.on("mouseup", ".cube", this.endWord.bind(this));
 	$(".cube").on(
 		"mouseover",
-		this.appendContents.bind(this)
+		this.appendLetters.bind(this)
 	);
-
-	this.$el.on("mouseup", this.endWord.bind(this));
 };
 
-Game.prototype.toggleGame = function(e) {
+Game.prototype.startGame = function(e) {
 	e.preventDefault();
-
+	$(".error").text("");
+	$(".gameMessage").text("");
 	this.gameboard.generateBoard();
 	$(".cube").removeClass("hidden");
-	this.keyEvents();
+	this.mouseEvents();
 	this.timer.toggleButton();
-	this.timer.ticking = !this.timer.ticking;
+	this.timer.ticking = true;
 };
 
-Game.prototype.appendContents = function(e) {
+Game.prototype.appendLetters = function(e) {
 	if(this.wordIsStarted) {
 		this.gameboard.addToWord(e);
 		$(".currentWord").text(this.level.currentWord);
@@ -48,7 +44,6 @@ Game.prototype.startWord = function(e) {
 	e.preventDefault();
 	this.gameboard.startWord(e);
 	this.wordIsStarted = true;
-
 	$(".error").text("");
 };
 
@@ -57,38 +52,34 @@ Game.prototype.endWord = function(e) {
 	this.wordIsStarted = false;
 	$(".currentWord").text("");
 	this.gameboard.endWord();
-
 };
 
 Game.prototype.addToWord = function(e) {
 	e.preventDefault();
 	var currentPalabra = this.level.currentWord;
 	$(".cube").each(function (i){
-			var curWort = currentPalabra;
-			this.addEventListener("mouseover", function() {
-				curWort += this.innerHTML;
-			}.bind(this));
-
+		var curWort = currentPalabra;
+		this.addEventListener("mouseover", function() {
+			curWort += this.innerHTML;
+		}.bind(this));
 	});
-
 	this.gameboard.addToWord(e);
 };
 
+Game.prototype.removemouseEvents = function() {
+	this.$el.off("mousedown", ".cube", this.startWord);
+	this.$el.off("mouseup", ".cube", this.endWord);
+	this.$el.off("mouseenter", ".cube", this.appendLetters);
+};
+
 Game.prototype.finishGame = function() {
-
-
 	$(".cube").addClass("hidden");
 	this.level.clearLevel();
+	this.gameboard.removeCubes();
 	$(".gameMessage").text("GAME OVER");
-	this.removeKeyEvents();
-	setTimeout(window.location.reload(), 4000);
+	this.removemouseEvents();
+	// TODO: add modal window to display score!
 };
 
 
-Game.prototype.removeKeyEvents = function() {
-	this.$el.off("mousedown", ".cube");
-	this.$el.off("mouseup", ".cube");
-	this.$el.off("mouseenter", ".cube");
-};
-
-module.exports = Game;
+module.exports = window.Game = Game;
