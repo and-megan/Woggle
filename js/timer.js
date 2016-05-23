@@ -73,17 +73,8 @@ Timer.prototype.stopPlaying = function() {
 	$(".timer").removeClass("ticking-time-bomb");
 	this.seconds = this.startTime;
 	$('.currentWord').text("");
-	// $('.beginGame').removeClass("hide-begin");
-	// $('.beginGame').text("Begin!");
 	$('.timer').addClass("timer-spot-hidden");
 	$('.playAgain').removeClass("hide-play-again");
-// 	$("#over-modal").modal({onOpen: function (dialog) {
-// 	dialog.overlay.fadeIn('slow', function () {
-// 		dialog.container.slideDown('slow', function () {
-// 			dialog.data.fadeIn('slow');
-// 		});
-// 	});
-// }});
 };
 
 Timer.prototype.tick = function() {

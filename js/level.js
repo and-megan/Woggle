@@ -47,10 +47,6 @@ Level.prototype.bsearch = function (dictionary, checkWord) {
 	}
 };
 
-Level.prototype.updateWordsAndScore = function () {
-
-};
-
 Level.prototype.calculateScore = function (word) {
 	if (word.length < 5) {
 		this.score += 1;
@@ -75,7 +71,6 @@ Level.prototype.updateScore = function(score, wordCount) {
 Level.prototype.clearLevel = function() {
 	this.words = [];
 	this.currentWord = "";
-	// $(".guessedWords").remove();
 	this.showGuessedWords();
 	$(".error").text("");
 };
