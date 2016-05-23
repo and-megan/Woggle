@@ -329,3 +329,49 @@ li.currentCount {
   padding: 5px;
 	font-size: 20px;
 }
+
+button.playAgain {
+	display: none;
+	position: absolute;
+  top: 148px;
+  left: 586px;
+  padding: 10px 20px 10px 20px;
+  background: #faec87;
+  cursor: pointer;
+  border: none;
+  color: #686868;
+  margin: 10px;
+  text-align: center;
+  font-size: 20px;
+  max-height: 45px;
+  -webkit-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  -moz-box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+  box-shadow: 1px 1px 1px 0px rgba(230,225,230,1);
+}
+button.show-play-again {
+	display: block;
+	position: absolute;
+	top: 200px;
+	left: 525px;
+}
+button.playAgain:hover {
+	background-color: #fcf4b8;
+}
+.gameMessage {
+  font-size: 25px;
+  font-weight: bolder;
+  width: 200px;
+  position: absolute;
+  top: 150px;
+  left: 580px;
+	color: #aa416c;
+}
+.final-score {
+  background-color: skyblue;
+  position: absolute;
+  top: 300px;
+  left: 540px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

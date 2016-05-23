@@ -1,7 +1,7 @@
 var Timer= function($el, cb, $timerSpot) {
 	this.$el = $el;
 	this.cb = cb;
-	this.startTime = 180;
+	this.startTime = 10;
 	this.seconds = this.startTime;
 	this.ticking = false;
 	this.showTime();
@@ -72,11 +72,18 @@ Timer.prototype.stopPlaying = function() {
 	this.cb();
 	$(".timer").removeClass("ticking-time-bomb");
 	this.seconds = this.startTime;
-	$('.beginGame').removeClass("hide-begin");
-	$('.beginGame').text("Begin!");
+	$('.currentWord').text("");
+	// $('.beginGame').removeClass("hide-begin");
+	// $('.beginGame').text("Begin!");
 	$('.timer').addClass("timer-spot-hidden");
-	// $("#game-over-modal").modal();
-	// return;
+	$('.playAgain').removeClass("hide-play-again");
+// 	$("#over-modal").modal({onOpen: function (dialog) {
+// 	dialog.overlay.fadeIn('slow', function () {
+// 		dialog.container.slideDown('slow', function () {
+// 			dialog.data.fadeIn('slow');
+// 		});
+// 	});
+// }});
 };
 
 Timer.prototype.tick = function() {

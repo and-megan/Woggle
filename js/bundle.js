@@ -64,6 +64,9 @@
 	var Timer = __webpack_require__(2);
 	var Gameboard = __webpack_require__(3);
 	var Level = __webpack_require__(4);
+	var boggleDictionary = __webpack_require__(5);
+	var container = $(".woggle-container");
+	var timerSpot = $(".timer-spot");
 	
 	var Game = function($container, dictionary, $timerSpot) {
 		var cb = this.finishGame.bind(this);
@@ -73,6 +76,7 @@
 		this.$el = $container;
 		this.dictionary = dictionary;
 		this.$el.on("click", ".beginGame", this.startGame.bind(this));
+		this.$el.on("click", ".playAgain", this.playAgain.bind(this));
 		this.wordIsStarted = false;
 	};
 	
@@ -87,6 +91,11 @@
 	
 	Game.prototype.startGame = function(e) {
 		e.preventDefault();
+		var game = new Game(container, boggleDictionary, timerSpot);
+		this.setupGame();
+	};
+	
+	Game.prototype.setupGame = function() {
 		$(".error").text("");
 		$(".gameMessage").text("");
 		this.gameboard.generateBoard();
@@ -136,14 +145,23 @@
 		this.$el.off("mouseup", ".cube", this.endWord);
 		this.$el.off("mouseenter", ".cube", this.appendLetters);
 	};
+	Game.prototype.playAgain = function (e) {
+		e.preventDefault();
+		location.reload();
+	};
+	
+	Game.prototype.displayFinalScore = function () {
+		$(".playAgain").addClass("show-play-again");
+		$(".scoreContainer").addClass("final-score");
+	};
 	
 	Game.prototype.finishGame = function() {
 		$(".cube").addClass("hidden");
 		this.level.clearLevel();
 		this.gameboard.removeCubes();
-		$(".gameMessage").text("GAME OVER");
+		$(".gameMessage").text("Time's up!");
 		this.removemouseEvents();
-		// TODO: add modal window to display score!
+		this.displayFinalScore();
 	};
 	
 	
@@ -157,7 +175,7 @@
 	var Timer= function($el, cb, $timerSpot) {
 		this.$el = $el;
 		this.cb = cb;
-		this.startTime = 180;
+		this.startTime = 10;
 		this.seconds = this.startTime;
 		this.ticking = false;
 		this.showTime();
@@ -228,11 +246,18 @@
 		this.cb();
 		$(".timer").removeClass("ticking-time-bomb");
 		this.seconds = this.startTime;
-		$('.beginGame').removeClass("hide-begin");
-		$('.beginGame').text("Begin!");
+		$('.currentWord').text("");
+		// $('.beginGame').removeClass("hide-begin");
+		// $('.beginGame').text("Begin!");
 		$('.timer').addClass("timer-spot-hidden");
-		// $("#game-over-modal").modal();
-		// return;
+		$('.playAgain').removeClass("hide-play-again");
+	// 	$("#over-modal").modal({onOpen: function (dialog) {
+	// 	dialog.overlay.fadeIn('slow', function () {
+	// 		dialog.container.slideDown('slow', function () {
+	// 			dialog.data.fadeIn('slow');
+	// 		});
+	// 	});
+	// }});
 	};
 	
 	Timer.prototype.tick = function() {
@@ -491,8 +516,7 @@
 	Level.prototype.clearLevel = function() {
 		this.words = [];
 		this.currentWord = "";
-		$(".guessedWords").empty();
-		$(".guessedWords").remove();
+		// $(".guessedWords").remove();
 		this.showGuessedWords();
 		$(".error").text("");
 	};

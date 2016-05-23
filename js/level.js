@@ -75,8 +75,7 @@ Level.prototype.updateScore = function(score, wordCount) {
 Level.prototype.clearLevel = function() {
 	this.words = [];
 	this.currentWord = "";
-	$(".guessedWords").empty();
-	$(".guessedWords").remove();
+	// $(".guessedWords").remove();
 	this.showGuessedWords();
 	$(".error").text("");
 };

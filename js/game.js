@@ -1,6 +1,9 @@
 var Timer = require('./timer.js');
 var Gameboard = require("./gameboard.js");
 var Level = require('./level.js');
+var boggleDictionary = require('./boggleDictionary.js');
+var container = $(".woggle-container");
+var timerSpot = $(".timer-spot");
 
 var Game = function($container, dictionary, $timerSpot) {
 	var cb = this.finishGame.bind(this);
@@ -10,6 +13,7 @@ var Game = function($container, dictionary, $timerSpot) {
 	this.$el = $container;
 	this.dictionary = dictionary;
 	this.$el.on("click", ".beginGame", this.startGame.bind(this));
+	this.$el.on("click", ".playAgain", this.playAgain.bind(this));
 	this.wordIsStarted = false;
 };
 
@@ -24,6 +28,11 @@ Game.prototype.mouseEvents = function() {
 
 Game.prototype.startGame = function(e) {
 	e.preventDefault();
+	var game = new Game(container, boggleDictionary, timerSpot);
+	this.setupGame();
+};
+
+Game.prototype.setupGame = function() {
 	$(".error").text("");
 	$(".gameMessage").text("");
 	this.gameboard.generateBoard();
@@ -73,14 +82,23 @@ Game.prototype.removemouseEvents = function() {
 	this.$el.off("mouseup", ".cube", this.endWord);
 	this.$el.off("mouseenter", ".cube", this.appendLetters);
 };
+Game.prototype.playAgain = function (e) {
+	e.preventDefault();
+	location.reload();
+};
+
+Game.prototype.displayFinalScore = function () {
+	$(".playAgain").addClass("show-play-again");
+	$(".scoreContainer").addClass("final-score");
+};
 
 Game.prototype.finishGame = function() {
 	$(".cube").addClass("hidden");
 	this.level.clearLevel();
 	this.gameboard.removeCubes();
-	$(".gameMessage").text("GAME OVER");
+	$(".gameMessage").text("Time's up!");
 	this.removemouseEvents();
-	// TODO: add modal window to display score!
+	this.displayFinalScore();
 };
 
 
