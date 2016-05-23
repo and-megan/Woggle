@@ -89,7 +89,9 @@ Game.prototype.playAgain = function (e) {
 
 Game.prototype.displayFinalScore = function () {
 	$(".playAgain").addClass("show-play-again");
+	$(".scoreContainer").prepend("<h4 class='final-score-header'>Final Score:</h4>");
 	$(".scoreContainer").addClass("final-score");
+
 };
 
 Game.prototype.finishGame = function() {

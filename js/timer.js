@@ -1,7 +1,7 @@
 var Timer= function($el, cb, $timerSpot) {
 	this.$el = $el;
 	this.cb = cb;
-	this.startTime = 10;
+	this.startTime = 180;
 	this.seconds = this.startTime;
 	this.ticking = false;
 	this.showTime();
